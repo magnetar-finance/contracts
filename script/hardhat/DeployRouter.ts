@@ -3,7 +3,7 @@ import { network } from "hardhat";
 import { join } from "path";
 import Values from "../constants/values.json";
 import { deploy } from "./utils/helpers";
-import { RouterWithFee } from "../../artifacts/types";
+import { Router } from "../../artifacts/types";
 import { writeFile } from "fs/promises";
 
 interface CoreOutput {
@@ -16,7 +16,7 @@ interface CoreOutput {
   minter: string;
   poolFactory: string;
   router: string;
-  CEDA: string;
+  SELO: string;
   voter: string;
   votingEscrow: string;
   votingRewardsFactory: string;
@@ -34,14 +34,13 @@ async function main() {
   // const calleeBuffer = fs.readFileSync(calleeFile);
   // const callee = calleeBuffer.toString();
 
-  const router = await deploy<RouterWithFee>(
-    "RouterWithFee",
+  const router = await deploy<Router>(
+    "Router",
     undefined,
     output.factoryRegistry,
     output.poolFactory,
     output.voter,
-    CONSTANTS.WETH,
-    CONSTANTS.team
+    CONSTANTS.WETH
   );
 
   output.router = router.address;
