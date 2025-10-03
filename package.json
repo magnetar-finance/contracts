@@ -41,7 +41,7 @@
     "clean": "rm -rf artifacts",
     "build": "yarn clean && yarn compile",
     "deploy": "npx hardhat run script/hardhat/DeployCore.ts",
-    "deploy:feeRouter": "npx hardhat run script/hardhat/DeployRouterWithFee.ts",
+    "deploy:router": "npx hardhat run script/hardhat/DeployRouter.ts",
     "getEther:feeRouter": "npx hardhat run script/hardhat/TestGetETHER.ts",
     "extract-abis": "ts-node script/ExtractABIs.ts",
     "deploy:callee": "npx hardhat run script/hardhat/DeployFeeCallee.ts",
