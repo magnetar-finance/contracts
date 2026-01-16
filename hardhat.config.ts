@@ -32,6 +32,22 @@ export default {
             gasPrice: "auto",
             gas: "auto",
             gasMultiplier: 1
+        },
+        supraEvmTestnet: {
+            url: "https://rpc-multivm.supra.com/rpc/v1/eth/wallet_integration",
+            chainId: 0x7900790079,
+            accounts: [process.env.PRIVATE_KEY],
+            gasPrice: "auto",
+            gas: "auto",
+            gasMultiplier: 1
+        },
+        zenchainTestnet: {
+            url: "https://zenchain-testnet.api.onfinality.io/public",
+            chainId: 8408,
+            accounts: [process.env.PRIVATE_KEY],
+            gasPrice: "auto",
+            gas: "auto",
+            gasMultiplier: 1
         }
     },
     solidity: {

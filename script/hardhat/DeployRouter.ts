@@ -16,7 +16,7 @@ interface CoreOutput {
   minter: string;
   poolFactory: string;
   router: string;
-  SELO: string;
+  MGN: string;
   voter: string;
   votingEscrow: string;
   votingRewardsFactory: string;

@@ -4,16 +4,16 @@ pragma solidity 0.8.19;
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 import {IMinter} from "./interfaces/IMinter.sol";
 import {IRewardsDistributor} from "./interfaces/IRewardsDistributor.sol";
-import {ISELO} from "./interfaces/ISELO.sol";
+import {IMGN} from "./interfaces/IMGN.sol";
 import {IVoter} from "./interfaces/IVoter.sol";
 import {IVotingEscrow} from "./interfaces/IVotingEscrow.sol";
 import {IEpochGovernor} from "./interfaces/IEpochGovernor.sol";
 import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
 contract Minter is IMinter {
-    using SafeERC20 for ISELO;
+    using SafeERC20 for IMGN;
     /// @inheritdoc IMinter
-    ISELO public immutable selo;
+    IMGN public immutable mgn;
     /// @inheritdoc IMinter
     IVoter public immutable voter;
     /// @inheritdoc IMinter
@@ -57,7 +57,7 @@ contract Minter is IMinter {
         address _ve, // the ve(3,3) system that will be locked into
         address _rewardsDistributor // the distribution system that ensures users aren't diluted
     ) {
-        selo = ISELO(IVotingEscrow(_ve).token());
+        mgn = IMGN(IVotingEscrow(_ve).token());
         voter = IVoter(_voter);
         ve = IVotingEscrow(_ve);
         team = msg.sender;
@@ -90,8 +90,8 @@ contract Minter is IMinter {
     /// @inheritdoc IMinter
     function calculateGrowth(uint256 _minted) public view returns (uint256 _growth) {
         uint256 _veTotal = ve.totalSupplyAt(activePeriod - 1);
-        uint256 _seloTotal = selo.totalSupply();
-        return (((((_minted * _veTotal) / _seloTotal) * _veTotal) / _seloTotal) * _veTotal) / _seloTotal / 2;
+        uint256 _mgnTotal = mgn.totalSupply();
+        return (((((_minted * _veTotal) / _mgnTotal) * _veTotal) / _mgnTotal) * _veTotal) / _mgnTotal / 2;
     }
 
     /// @inheritdoc IMinter
@@ -125,7 +125,7 @@ contract Minter is IMinter {
             activePeriod = _period;
             uint256 _weekly = weekly;
             uint256 _emission;
-            uint256 _totalSupply = selo.totalSupply();
+            uint256 _totalSupply = mgn.totalSupply();
             bool _tail = _weekly < TAIL_START;
 
             if (_tail) {
@@ -142,19 +142,19 @@ contract Minter is IMinter {
             uint256 _teamEmissions = (_rate * (_growth + _emission)) / (MAX_BPS);
 
             uint256 _required = _growth + _emission + _teamEmissions;
-            uint256 _balanceOf = selo.balanceOf(address(this));
+            uint256 _balanceOf = mgn.balanceOf(address(this));
             if (_balanceOf < _required) {
-                selo.mint(address(this), _required - _balanceOf);
+                mgn.mint(address(this), _required - _balanceOf);
             }
 
-            selo.safeTransfer(address(team), _teamEmissions);
-            selo.safeTransfer(address(rewardsDistributor), _growth);
+            mgn.safeTransfer(address(team), _teamEmissions);
+            mgn.safeTransfer(address(rewardsDistributor), _growth);
             rewardsDistributor.checkpointToken(); // checkpoint token balance that was just minted in rewards distributor
 
-            selo.safeApprove(address(voter), _emission);
+            mgn.safeApprove(address(voter), _emission);
             voter.notifyRewardAmount(_emission);
 
-            emit Mint(msg.sender, _emission, selo.totalSupply(), _tail);
+            emit Mint(msg.sender, _emission, mgn.totalSupply(), _tail);
         }
     }
 }

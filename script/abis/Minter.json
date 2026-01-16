@@ -321,10 +321,10 @@
   },
   {
     "inputs": [],
-    "name": "selo",
+    "name": "mgn",
     "outputs": [
       {
-        "internalType": "contract ISELO",
+        "internalType": "contract IMGN",
         "name": "",
         "type": "address"
       }

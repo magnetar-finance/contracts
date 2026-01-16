@@ -19,7 +19,7 @@ interface IGauge {
     /// @notice Address of the pool LP token which is deposited (staked) for rewards
     function stakingToken() external view returns (address);
 
-    /// @notice Address of the token (SELO v2) rewarded to stakers
+    /// @notice Address of the token (MGN v2) rewarded to stakers
     function rewardToken() external view returns (address);
 
     /// @notice Address of the FeesVotingReward contract linked to the gauge

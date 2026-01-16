@@ -11,7 +11,7 @@ import {VetoGovernorVotes} from "./governance/VetoGovernorVotes.sol";
 import {VetoGovernorVotesQuorumFraction} from "./governance/VetoGovernorVotesQuorumFraction.sol";
 import {VetoGovernorPreventLateQuorum} from "./governance/VetoGovernorPreventLateQuorum.sol";
 
-contract SELOGovernor is
+contract MGNGovernor is
     VetoGovernor,
     VetoGovernorCountingSimple,
     VetoGovernorVotes,

@@ -13,12 +13,13 @@ import {
   Pool,
   Minter,
   RewardsDistributor,
-  SELO,
+  MGN,
   Voter,
   VeArtProxy,
   VotingEscrow,
-  SELOForwarder,
+  MGNForwarder,
   RouterWithFee,
+  Router,
 } from "../../artifacts/types";
 import Values from "../constants/values.json";
 
@@ -32,7 +33,7 @@ interface CoreOutput {
   minter: string;
   poolFactory: string;
   router: string;
-  SELO: string;
+  MGN: string;
   voter: string;
   votingEscrow: string;
   votingRewardsFactory: string;
@@ -45,9 +46,9 @@ async function main() {
   const CONSTANTS = Values[networkId as unknown as keyof typeof Values];
   const whitelistTokens = CONSTANTS.whitelistTokens;
 
-  const SELO = await deploy<SELO>("SELO");
-  await SELO.mint(CONSTANTS.team, MINT_VALUE);
-  whitelistTokens.push(SELO.address);
+  const MGN = await deploy<MGN>("MGN");
+  await MGN.mint(CONSTANTS.team, MINT_VALUE);
+  whitelistTokens.push(MGN.address);
   // ====== end _deploySetupBefore() ======
 
   // ====== start _coreSetup() ======
@@ -75,7 +76,7 @@ async function main() {
   );
   // ====== end deployFactories() ======
 
-  const forwarder = await deploy<SELOForwarder>("SELOForwarder");
+  const forwarder = await deploy<MGNForwarder>("MGNForwarder");
 
   const balanceLogicLibrary = await deployLibrary("BalanceLogicLibrary");
   const delegationLogicLibrary = await deployLibrary("DelegationLogicLibrary");
@@ -88,7 +89,7 @@ async function main() {
     "VotingEscrow",
     libraries,
     forwarder.address,
-    SELO.address,
+    MGN.address,
     factoryRegistry.address
   );
 
@@ -123,7 +124,7 @@ async function main() {
 
   const minter = await deploy<Minter>("Minter", undefined, voter.address, escrow.address, distributor.address);
   await distributor.setMinter(minter.address);
-  await SELO.setMinter(minter.address);
+  await MGN.setMinter(minter.address);
 
   await voter.initialize(whitelistTokens, minter.address);
   // ====== end _coreSetup() ======
@@ -141,14 +142,13 @@ async function main() {
   await poolFactory.setVoter(voter.address);
   // ====== end _deploySetupAfter() ======
 
-  const router = await deploy<RouterWithFee>(
-    "RouterWithFee",
+  const router = await deploy<Router>(
+    "Router",
     undefined,
     factoryRegistry.address,
     poolFactory.address,
     voter.address,
-    CONSTANTS.WETH,
-    CONSTANTS.team
+    CONSTANTS.WETH
   );
 
   const outputDirectory = "script/constants/output";
@@ -164,7 +164,7 @@ async function main() {
     minter: minter.address,
     poolFactory: poolFactory.address,
     router: router.address,
-    SELO: SELO.address,
+    MGN: MGN.address,
     voter: voter.address,
     votingEscrow: escrow.address,
     votingRewardsFactory: votingRewardsFactory.address,

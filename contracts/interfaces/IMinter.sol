@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {ISELO} from "./ISELO.sol";
+import {IMGN} from "./IMGN.sol";
 import {IVoter} from "./IVoter.sol";
 import {IVotingEscrow} from "./IVotingEscrow.sol";
 import {IRewardsDistributor} from "./IRewardsDistributor.sol";
@@ -19,8 +19,8 @@ interface IMinter {
     event Nudge(uint256 indexed _period, uint256 _oldRate, uint256 _newRate);
     event AcceptTeam(address indexed _newTeam);
 
-    /// @notice Interface of ISELO.sol
-    function selo() external view returns (ISELO);
+    /// @notice Interface of IMGN.sol
+    function mgn() external view returns (IMGN);
 
     /// @notice Interface of Voter.sol
     function voter() external view returns (IVoter);
@@ -61,7 +61,7 @@ interface IMinter {
     /// @notice Tail emissions rate in basis points
     function tailEmissionRate() external view returns (uint256);
 
-    /// @notice Starting weekly emission of 15M SELO (SELO has 18 decimals)
+    /// @notice Starting weekly emission of 15M MGN (MGN has 18 decimals)
     function weekly() external view returns (uint256);
 
     /// @notice Timestamp of start of epoch that updatePeriod was last called in
@@ -103,10 +103,10 @@ interface IMinter {
     function nudge() external;
 
     /// @notice Calculates rebases according to the formula
-    ///         weekly * (ve.totalSupply / SELO.totalSupply) ^ 3 / 2
+    ///         weekly * (ve.totalSupply / MGN.totalSupply) ^ 3 / 2
     ///         Note that ve.totalSupply is the locked ve supply
-    ///         SELO.totalSupply is the total ve supply minted
-    /// @param _minted Amount of SELO minted this epoch
+    ///         MGN.totalSupply is the total ve supply minted
+    /// @param _minted Amount of MGN minted this epoch
     /// @return _growth Rebases
     function calculateGrowth(uint256 _minted) external view returns (uint256 _growth);
 

@@ -1,14 +1,14 @@
 pragma solidity 0.8.19;
 
-import {ISELO} from "./interfaces/ISELO.sol";
+import {IMGN} from "./interfaces/IMGN.sol";
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import {ERC20Permit} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
 
-contract SELO is ISELO, ERC20Permit {
+contract MGN is IMGN, ERC20Permit {
     address public minter;
     address private owner;
 
-    constructor() ERC20("Selora Finance", "SELO") ERC20Permit("Selora Finance") {
+    constructor() ERC20("Magnetar Finance", "MGN") ERC20Permit("Magnetar Finance") {
         minter = msg.sender;
         owner = msg.sender;
     }
