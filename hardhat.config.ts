@@ -58,7 +58,7 @@ export default {
             gasMultiplier: 1
         },
         pharosNetworkTestnet: {
-            url: "https://api.zan.top/node/v1/pharos/atlantic/5c34a51f74114a7a9c201593fb45a73e",
+            url: "https://atlantic.dplabs-internal.com",
             chainId: 688689,
             accounts: [process.env.PRIVATE_KEY],
             gasPrice: "auto",
