@@ -48,6 +48,30 @@ export default {
             gasPrice: "auto",
             gas: "auto",
             gasMultiplier: 1
+        },
+        seismicDevnet: {
+            url: "https://node-2.seismicdev.net/rpc",
+            chainId: 5124,
+            accounts: [process.env.PRIVATE_KEY],
+            gasPrice: "auto",
+            gas: "auto",
+            gasMultiplier: 1
+        },
+        pharosNetworkTestnet: {
+            url: "https://api.zan.top/node/v1/pharos/atlantic/5c34a51f74114a7a9c201593fb45a73e",
+            chainId: 688689,
+            accounts: [process.env.PRIVATE_KEY],
+            gasPrice: "auto",
+            gas: "auto",
+            gasMultiplier: 1
+        },
+        duskEVMTestnet: {
+            url: "https://rpc.testnet.evm.dusk.network",
+            chainId: 745,
+            accounts: [process.env.PRIVATE_KEY],
+            gasPrice: "auto",
+            gas: "auto",
+            gasMultiplier: 1
         }
     },
     solidity: {

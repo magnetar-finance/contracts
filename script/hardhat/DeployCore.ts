@@ -1,6 +1,6 @@
-import { deploy, deployLibrary } from "./utils/helpers";
-import { createWriteStream, existsSync } from "fs";
-import { writeFile } from "fs/promises";
+import { deploy, deployLibrary, getContractAt } from "./utils/helpers";
+import { createWriteStream, existsSync, WriteStream } from "fs";
+import { readFile, writeFile } from "fs/promises";
 import { join } from "path";
 import { network } from "hardhat";
 import { Libraries } from "hardhat/types";
@@ -39,75 +39,233 @@ interface CoreOutput {
   votingRewardsFactory: string;
 }
 
+function waitUntil(condition: () => boolean, timeoutMs = 10000) {
+  return new Promise<void>((resolve, reject) => {
+    const prev = Date.now();
+    const interval = setInterval(() => {
+      if (condition()) {
+        console.info("Condition is true. Exiting [waitUntil] now");
+        clearInterval(interval);
+        resolve();
+      } else if (Date.now() - prev >= timeoutMs) {
+        clearInterval(interval);
+        reject(new Error("Timed out"));
+      }
+    }, 50);
+  });
+}
+
 async function main() {
-  // ====== start _deploySetupBefore() ======
+  // Output
   const networkId: number = network.config.chainId as number;
+  const outputDirectory = "script/constants/output";
+  const outputFile = join(process.cwd(), outputDirectory, `CoreOutput-${String(networkId)}.json`);
+  let ws: WriteStream | null = null;
+  // Create file if it does not exist
+  if (!existsSync(outputFile)) {
+    ws = createWriteStream(outputFile);
+    ws.write(JSON.stringify({}, null, 2));
+    ws.end();
+  }
+
+  if (ws) {
+    await waitUntil(() => {
+      return ws.writableFinished;
+    });
+  }
+
+  // Read file
+  const fileContentBuffer = await readFile(outputFile);
+  const output: CoreOutput = JSON.parse(fileContentBuffer.toString());
+  // ====== start _deploySetupBefore() ======
   const MINT_VALUE = "1000000000000000000000000000";
   const CONSTANTS = Values[networkId as unknown as keyof typeof Values];
   const whitelistTokens = CONSTANTS.whitelistTokens;
 
-  const MGN = await deploy<MGN>("MGN");
-  await MGN.mint(CONSTANTS.team, MINT_VALUE);
-  whitelistTokens.push(MGN.address);
+  let mgn: MGN;
+  let poolFactory: PoolFactory;
+  let votingRewardsFactory: VotingRewardsFactory;
+  let gaugeFactory: GaugeFactory;
+  let managedRewardsFactory: ManagedRewardsFactory;
+  let factoryRegistry: FactoryRegistry;
+  let forwarder: MGNForwarder;
+  let escrow: VotingEscrow;
+  let artProxy: VeArtProxy;
+  let distributor: RewardsDistributor;
+  let voter: Voter;
+  let minter: Minter;
+
+  try {
+    if (!output.MGN) {
+      mgn = await deploy<MGN>("MGN");
+      output.MGN = mgn.address;
+    } else {
+      mgn = await getContractAt<MGN>("MGN", output.MGN);
+    }
+    await mgn.mint(CONSTANTS.team, MINT_VALUE);
+    whitelistTokens.push(mgn.address);
+  } catch (error: any) {
+    console.error(error.stack);
+  }
   // ====== end _deploySetupBefore() ======
 
   // ====== start _coreSetup() ======
 
   // ====== start deployFactories() ======
-  const implementation = await deploy<Pool>("Pool");
+  try {
+    if (!output.poolFactory) {
+      const implementation = await deploy<Pool>("Pool");
 
-  const poolFactory = await deploy<PoolFactory>("PoolFactory", undefined, implementation.address);
-  await poolFactory.setFee(true, 1);
-  await poolFactory.setFee(false, 1);
+      poolFactory = await deploy<PoolFactory>("PoolFactory", undefined, implementation.address);
+      output.poolFactory = poolFactory.address;
+    } else {
+      poolFactory = await getContractAt<PoolFactory>("PoolFactory", output.poolFactory);
+    }
+    await poolFactory.setFee(true, 1);
+    await poolFactory.setFee(false, 1);
+  } catch (error: any) {
+    console.error(error.stack);
+  }
 
-  const votingRewardsFactory = await deploy<VotingRewardsFactory>("VotingRewardsFactory");
+  try {
+    if (!output.votingRewardsFactory) {
+      votingRewardsFactory = await deploy<VotingRewardsFactory>("VotingRewardsFactory");
+      output.votingRewardsFactory = votingRewardsFactory.address;
+    } else {
+      votingRewardsFactory = await getContractAt<VotingRewardsFactory>(
+        "VotingRewardsFactory",
+        output.votingRewardsFactory
+      );
+    }
+  } catch (error: any) {
+    console.error(error.stack);
+  }
 
-  const gaugeFactory = await deploy<GaugeFactory>("GaugeFactory");
+  try {
+    if (!output.gaugeFactory) {
+      gaugeFactory = await deploy<GaugeFactory>("GaugeFactory");
+      output.gaugeFactory = gaugeFactory.address;
+    } else {
+      gaugeFactory = await getContractAt<GaugeFactory>("GaugeFactory", output.gaugeFactory);
+    }
+  } catch (error: any) {
+    console.error(error.stack);
+  }
 
-  const managedRewardsFactory = await deploy<ManagedRewardsFactory>("ManagedRewardsFactory");
+  try {
+    if (!output.managedRewardsFactory) {
+      managedRewardsFactory = await deploy<ManagedRewardsFactory>("ManagedRewardsFactory");
+      output.managedRewardsFactory = managedRewardsFactory.address;
+    } else {
+      managedRewardsFactory = await getContractAt<ManagedRewardsFactory>(
+        "ManagedRewardsFactory",
+        output.managedRewardsFactory
+      );
+    }
+  } catch (error: any) {
+    console.error(error.stack);
+  }
 
-  const factoryRegistry = await deploy<FactoryRegistry>(
-    "FactoryRegistry",
-    undefined,
-    poolFactory.address,
-    votingRewardsFactory.address,
-    gaugeFactory.address,
-    managedRewardsFactory.address
-  );
+  try {
+    if (!output.factoryRegistry) {
+      factoryRegistry = await deploy<FactoryRegistry>(
+        "FactoryRegistry",
+        undefined,
+        poolFactory!.address,
+        votingRewardsFactory!.address,
+        gaugeFactory!.address,
+        managedRewardsFactory!.address
+      );
+      output.factoryRegistry = factoryRegistry.address;
+    } else {
+      factoryRegistry = await getContractAt<FactoryRegistry>("FactoryRegistry", output.factoryRegistry);
+    }
+  } catch (error: any) {
+    console.error(error.stack);
+  }
+
+  try {
+    if (!output.forwarder) {
+      forwarder = await deploy<MGNForwarder>("MGNForwarder");
+      output.forwarder = forwarder.address;
+    } else {
+      forwarder = await getContractAt<MGNForwarder>("MGNForwarder", output.forwarder);
+    }
+  } catch (error: any) {
+    console.error(error.stack);
+  }
+
   // ====== end deployFactories() ======
+  try {
+    if (!output.votingEscrow) {
+      const balanceLogicLibrary = await deployLibrary("BalanceLogicLibrary");
+      const delegationLogicLibrary = await deployLibrary("DelegationLogicLibrary");
+      const libraries: Libraries = {
+        BalanceLogicLibrary: balanceLogicLibrary.address,
+        DelegationLogicLibrary: delegationLogicLibrary.address,
+      };
+      escrow = await deploy<VotingEscrow>(
+        "VotingEscrow",
+        libraries,
+        forwarder!.address,
+        mgn!.address,
+        factoryRegistry!.address
+      );
 
-  const forwarder = await deploy<MGNForwarder>("MGNForwarder");
+      output.votingEscrow = escrow.address;
+    } else {
+      escrow = await getContractAt<VotingEscrow>("VotingEscrow", output.votingEscrow);
+    }
+  } catch (error: any) {
+    console.error(error.stack);
+  }
 
-  const balanceLogicLibrary = await deployLibrary("BalanceLogicLibrary");
-  const delegationLogicLibrary = await deployLibrary("DelegationLogicLibrary");
-  const libraries: Libraries = {
-    BalanceLogicLibrary: balanceLogicLibrary.address,
-    DelegationLogicLibrary: delegationLogicLibrary.address,
-  };
+  try {
+    if (!output.artProxy) {
+      const trig = await deployLibrary("Trig");
+      const perlinNoise = await deployLibrary("PerlinNoise");
+      const artLibraries: Libraries = {
+        Trig: trig.address,
+        PerlinNoise: perlinNoise.address,
+      };
 
-  const escrow = await deploy<VotingEscrow>(
-    "VotingEscrow",
-    libraries,
-    forwarder.address,
-    MGN.address,
-    factoryRegistry.address
-  );
+      artProxy = await deploy<VeArtProxy>("VeArtProxy", artLibraries, escrow!.address);
+      output.artProxy = artProxy.address;
+      await escrow!.setArtProxy(artProxy.address);
+    } else {
+      artProxy = await getContractAt<VeArtProxy>("VeArtProxy", output.artProxy);
+    }
+  } catch (error: any) {
+    console.error(error.stack);
+  }
 
-  const trig = await deployLibrary("Trig");
-  const perlinNoise = await deployLibrary("PerlinNoise");
-  const artLibraries: Libraries = {
-    Trig: trig.address,
-    PerlinNoise: perlinNoise.address,
-  };
+  try {
+    if (!output.distributor) {
+      distributor = await deploy<RewardsDistributor>("RewardsDistributor", undefined, escrow!.address);
+      output.distributor = distributor.address;
+    } else {
+      distributor = await getContractAt<RewardsDistributor>("RewardsDistributor", output.distributor);
+    }
+  } catch (error: any) {
+    console.error(error.stack);
+  }
 
-  const artProxy = await deploy<VeArtProxy>("VeArtProxy", artLibraries, escrow.address);
-  await escrow.setArtProxy(artProxy.address);
+  try {
+    if (!output.voter) {
+      voter = await deploy<Voter>("Voter", undefined, forwarder!.address, escrow!.address, factoryRegistry!.address);
+      output.voter = voter.address;
+    } else {
+      voter = await getContractAt<Voter>("Voter", output.voter);
+    }
+  } catch (error: any) {
+    console.error(error.stack);
+  }
 
-  const distributor = await deploy<RewardsDistributor>("RewardsDistributor", undefined, escrow.address);
-
-  const voter = await deploy<Voter>("Voter", undefined, forwarder.address, escrow.address, factoryRegistry.address);
-
-  await escrow.setVoterAndDistributor(voter.address, distributor.address);
+  try {
+    await escrow!.setVoterAndDistributor(voter!.address, distributor!.address);
+  } catch (error: any) {
+    console.error(error.stack);
+  }
 
   // const router = await deploy<RouterWithFee>(
   //   "RouterWithFee",
@@ -122,62 +280,103 @@ async function main() {
   //   }
   // );
 
-  const minter = await deploy<Minter>("Minter", undefined, voter.address, escrow.address, distributor.address);
-  await distributor.setMinter(minter.address);
-  await MGN.setMinter(minter.address);
+  try {
+    if (!output.minter) {
+      minter = await deploy<Minter>("Minter", undefined, voter!.address, escrow!.address, distributor!.address);
+      output.minter = minter.address;
+    } else {
+      minter = await getContractAt<Minter>("Minter", output.minter);
+    }
+  } catch (error: any) {
+    console.error(error.stack);
+  }
 
-  await voter.initialize(whitelistTokens, minter.address);
+  try {
+    await distributor!.setMinter(minter!.address);
+  } catch (error: any) {
+    console.error(error.stack);
+  }
+  try {
+    await mgn!.setMinter(minter!.address);
+  } catch (error: any) {
+    console.error(error.stack);
+  }
+
+  try {
+    await voter!.initialize(whitelistTokens, minter!.address);
+  } catch (error: any) {
+    console.error(error.stack);
+  }
   // ====== end _coreSetup() ======
 
   // ====== start _deploySetupAfter() ======
-  await escrow.setTeam(CONSTANTS.team);
-  await minter.setTeam(CONSTANTS.team);
-  await poolFactory.setPauser(CONSTANTS.team);
-  await voter.setEmergencyCouncil(CONSTANTS.emergencyCouncil);
-  await voter.setEpochGovernor(CONSTANTS.team);
-  await voter.setGovernor(CONSTANTS.team);
-  await factoryRegistry.transferOwnership(CONSTANTS.team);
-
-  await poolFactory.setFeeManager(CONSTANTS.feeManager);
-  await poolFactory.setVoter(voter.address);
-  // ====== end _deploySetupAfter() ======
-
-  const router = await deploy<Router>(
-    "Router",
-    undefined,
-    factoryRegistry.address,
-    poolFactory.address,
-    voter.address,
-    CONSTANTS.WETH
-  );
-
-  const outputDirectory = "script/constants/output";
-  const outputFile = join(process.cwd(), outputDirectory, `CoreOutput-${String(networkId)}.json`);
-
-  const output: CoreOutput = {
-    artProxy: artProxy.address,
-    distributor: distributor.address,
-    factoryRegistry: factoryRegistry.address,
-    forwarder: forwarder.address,
-    gaugeFactory: gaugeFactory.address,
-    managedRewardsFactory: managedRewardsFactory.address,
-    minter: minter.address,
-    poolFactory: poolFactory.address,
-    router: router.address,
-    MGN: MGN.address,
-    voter: voter.address,
-    votingEscrow: escrow.address,
-    votingRewardsFactory: votingRewardsFactory.address,
-  };
+  try {
+    await escrow!.setTeam(CONSTANTS.team);
+  } catch (error: any) {
+    console.error(error.stack);
+  }
+  try {
+    await minter!.setTeam(CONSTANTS.team);
+  } catch (error: any) {
+    console.error(error.stack);
+  }
+  try {
+    await poolFactory!.setPauser(CONSTANTS.team);
+  } catch (error: any) {
+    console.error(error.stack);
+  }
+  try {
+    await voter!.setEmergencyCouncil(CONSTANTS.emergencyCouncil);
+  } catch (error: any) {
+    console.error(error.stack);
+  }
+  try {
+    await voter!.setEpochGovernor(CONSTANTS.team);
+  } catch (error: any) {
+    console.error(error.stack);
+  }
+  try {
+    await voter!.setGovernor(CONSTANTS.team);
+  } catch (error: any) {
+    console.error(error.stack);
+  }
+  try {
+    await factoryRegistry!.transferOwnership(CONSTANTS.team);
+  } catch (error: any) {
+    console.error(error.stack);
+  }
 
   try {
-    if (!existsSync(outputFile)) {
-      const ws = createWriteStream(outputFile);
-      ws.write(JSON.stringify(output, null, 2));
-      ws.end();
-    } else {
-      await writeFile(outputFile, JSON.stringify(output, null, 2));
+    await poolFactory!.setFeeManager(CONSTANTS.feeManager);
+  } catch (error: any) {
+    console.error(error.stack);
+  }
+  try {
+    await poolFactory!.setVoter(voter!.address);
+  } catch (error: any) {
+    console.error(error.stack);
+  }
+  // ====== end _deploySetupAfter() ======
+
+  if (!output.router) {
+    try {
+      const router = await deploy<Router>(
+        "Router",
+        undefined,
+        factoryRegistry!.address,
+        poolFactory!.address,
+        voter!.address,
+        CONSTANTS.WETH
+      );
+
+      output.router = router.address;
+    } catch (error: any) {
+      console.error(error.stack);
     }
+  }
+
+  try {
+    await writeFile(outputFile, JSON.stringify(output, null, 2));
   } catch (err) {
     console.error(`Error writing output file: ${err}`);
   }

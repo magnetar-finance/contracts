@@ -196,5 +196,199 @@
                 "token": "0x4200000000000000000000000000000000000006"
             }
         ]
+      },
+      "5124": {
+        "allowedManager": "0xb69DB7b7B3aD64d53126DCD1f4D5fBDaea4fF578",
+        "feeManager": "0xb69DB7b7B3aD64d53126DCD1f4D5fBDaea4fF578",
+        "emergencyCouncil": "0xb69DB7b7B3aD64d53126DCD1f4D5fBDaea4fF578",
+        "team": "0xb69DB7b7B3aD64d53126DCD1f4D5fBDaea4fF578",
+        "vetoer": "0xb69DB7b7B3aD64d53126DCD1f4D5fBDaea4fF578",
+        "WETH": "0x38d8959342B1c372cf45a7C529B8a2c370648e04",
+        "whitelistTokens": [
+            "0x48230fA82fe21fc728a88CE382f970D97476B9EE",
+            "0x8F9906143F72d368F2AB068Df87242De5D427867",
+            "0x6a6b6fbCDeaBfE985601CcfEd9D7C1844e399C38",
+            "0x44D25859F79787fF937ec1305Dbf0866d6064E21",
+            "0x89F8267e9480Bbf7833D3A0Cfe98bDE70f96E1a0",
+            "0x2A0B66dEb779EF7DF45b064eF5cee2B1bF6E5DD5",
+            "0xE267b9cC76a614b8E178b4552e9983d1F19CEB05",
+            "0x977F64f1370AF5Ee54a76513275C80B5d4fdF0b8"
+        ],
+        "poolsV2": [
+            {
+                "stable": true,
+                "tokenA": "0x3E29D3A9316dAB217754d13b28646B76607c5f04",
+                "tokenB": "0x6806411765Af15Bddd26f8f544A34cC40cb9838B"
+            },
+            {
+                "stable": false,
+                "tokenA": "0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb",
+                "tokenB": "0xFdb794692724153d1488CcdBE0C56c252596735F"
+            },
+            {
+                "stable": false,
+                "tokenA": "0x340fE1D898ECCAad394e2ba0fC1F93d27c7b717A",
+                "tokenB": "0x7F5c764cBc14f9669B88837ca1490cCa17c31607"
+            },
+            {
+                "stable": true,
+                "tokenA": "0xc40F949F8a4e094D1b49a23ea9241D289B7b2819",
+                "tokenB": "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1"
+            },
+            {
+                "stable": true,
+                "tokenA": "0x7F5c764cBc14f9669B88837ca1490cCa17c31607",
+                "tokenB": "0xc5b001DC33727F8F26880B184090D3E252470D45"
+            }
+        ],
+        "poolsCEDAV2": [
+            {
+                "stable": true,
+                "tokenB": "0x46f21fDa29F1339e0aB543763FF683D399e393eC"
+            },
+            {
+                "stable": false,
+                "tokenA": "0x3417E54A51924C225330f8770514aD5560B9098D"
+            },
+            {
+                "stable": false,
+                "tokenB": "0x7F5c764cBc14f9669B88837ca1490cCa17c31607"
+            },
+            {
+                "stable": false,
+                "tokenB": "0x7aE97042a4A0eB4D1eB370C34BfEC71042a056B7"
+            },
+            {
+                "stable": false,
+                "token": "0x4200000000000000000000000000000000000006"
+            }
+        ]
+      },
+      "688689": {
+        "allowedManager": "0xb69DB7b7B3aD64d53126DCD1f4D5fBDaea4fF578",
+        "feeManager": "0xb69DB7b7B3aD64d53126DCD1f4D5fBDaea4fF578",
+        "emergencyCouncil": "0xb69DB7b7B3aD64d53126DCD1f4D5fBDaea4fF578",
+        "team": "0xb69DB7b7B3aD64d53126DCD1f4D5fBDaea4fF578",
+        "vetoer": "0xb69DB7b7B3aD64d53126DCD1f4D5fBDaea4fF578",
+        "WETH": "0x838800b758277cc111b2d48ab01e5e164f8e9471",
+        "whitelistTokens": [
+            "0xe7e84b8b4f39c507499c40b4ac199b050e2882d5",
+            "0xe0be08c77f415f577a1b3a9ad7a1df1479564ec8",
+            "0x838800b758277cc111b2d48ab01e5e164f8e9471",
+            "0xb691f00682feef63bc73f41c380ff648d73c6a2c",
+            "0x7d211f77525ea39a0592794f793cc1036eeaccd5"
+        ],
+        "poolsV2": [
+            {
+                "stable": true,
+                "tokenA": "0x3E29D3A9316dAB217754d13b28646B76607c5f04",
+                "tokenB": "0x6806411765Af15Bddd26f8f544A34cC40cb9838B"
+            },
+            {
+                "stable": false,
+                "tokenA": "0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb",
+                "tokenB": "0xFdb794692724153d1488CcdBE0C56c252596735F"
+            },
+            {
+                "stable": false,
+                "tokenA": "0x340fE1D898ECCAad394e2ba0fC1F93d27c7b717A",
+                "tokenB": "0x7F5c764cBc14f9669B88837ca1490cCa17c31607"
+            },
+            {
+                "stable": true,
+                "tokenA": "0xc40F949F8a4e094D1b49a23ea9241D289B7b2819",
+                "tokenB": "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1"
+            },
+            {
+                "stable": true,
+                "tokenA": "0x7F5c764cBc14f9669B88837ca1490cCa17c31607",
+                "tokenB": "0xc5b001DC33727F8F26880B184090D3E252470D45"
+            }
+        ],
+        "poolsCEDAV2": [
+            {
+                "stable": true,
+                "tokenB": "0x46f21fDa29F1339e0aB543763FF683D399e393eC"
+            },
+            {
+                "stable": false,
+                "tokenA": "0x3417E54A51924C225330f8770514aD5560B9098D"
+            },
+            {
+                "stable": false,
+                "tokenB": "0x7F5c764cBc14f9669B88837ca1490cCa17c31607"
+            },
+            {
+                "stable": false,
+                "tokenB": "0x7aE97042a4A0eB4D1eB370C34BfEC71042a056B7"
+            },
+            {
+                "stable": false,
+                "token": "0x4200000000000000000000000000000000000006"
+            }
+        ]
+      },
+      "745": {
+        "allowedManager": "0xb69DB7b7B3aD64d53126DCD1f4D5fBDaea4fF578",
+        "feeManager": "0xb69DB7b7B3aD64d53126DCD1f4D5fBDaea4fF578",
+        "emergencyCouncil": "0xb69DB7b7B3aD64d53126DCD1f4D5fBDaea4fF578",
+        "team": "0xb69DB7b7B3aD64d53126DCD1f4D5fBDaea4fF578",
+        "vetoer": "0xb69DB7b7B3aD64d53126DCD1f4D5fBDaea4fF578",
+        "WETH": "0x5695487B33A02B7f811D001D64a1581c474f6c14",
+        "whitelistTokens": [
+            "0x9059AD5162A27238B9c65f72B4Dc938B54ff873A",
+            "0x5695487B33A02B7f811D001D64a1581c474f6c14",
+            "0x6cFabd149eBB0b10f13d89590F72c8503C548E62",
+            "0x66aCa281eB98ef05bc31e66CC353A9D7d11Ae2E7"
+        ],
+        "poolsV2": [
+            {
+                "stable": true,
+                "tokenA": "0x3E29D3A9316dAB217754d13b28646B76607c5f04",
+                "tokenB": "0x6806411765Af15Bddd26f8f544A34cC40cb9838B"
+            },
+            {
+                "stable": false,
+                "tokenA": "0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb",
+                "tokenB": "0xFdb794692724153d1488CcdBE0C56c252596735F"
+            },
+            {
+                "stable": false,
+                "tokenA": "0x340fE1D898ECCAad394e2ba0fC1F93d27c7b717A",
+                "tokenB": "0x7F5c764cBc14f9669B88837ca1490cCa17c31607"
+            },
+            {
+                "stable": true,
+                "tokenA": "0xc40F949F8a4e094D1b49a23ea9241D289B7b2819",
+                "tokenB": "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1"
+            },
+            {
+                "stable": true,
+                "tokenA": "0x7F5c764cBc14f9669B88837ca1490cCa17c31607",
+                "tokenB": "0xc5b001DC33727F8F26880B184090D3E252470D45"
+            }
+        ],
+        "poolsCEDAV2": [
+            {
+                "stable": true,
+                "tokenB": "0x46f21fDa29F1339e0aB543763FF683D399e393eC"
+            },
+            {
+                "stable": false,
+                "tokenA": "0x3417E54A51924C225330f8770514aD5560B9098D"
+            },
+            {
+                "stable": false,
+                "tokenB": "0x7F5c764cBc14f9669B88837ca1490cCa17c31607"
+            },
+            {
+                "stable": false,
+                "tokenB": "0x7aE97042a4A0eB4D1eB370C34BfEC71042a056B7"
+            },
+            {
+                "stable": false,
+                "token": "0x4200000000000000000000000000000000000006"
+            }
+        ]
       }
 }
