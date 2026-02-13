@@ -13,8 +13,8 @@ interface StableERC20Output {
 async function main() {
   const networkId: number = network.config.chainId as number;
   const MINT_VALUE = "100000000000000";
-  const USDC = await deploy<StableERC20>("StableERC20", undefined, "Magnetar Finance USD", "SFUSD", MINT_VALUE);
-  const USDT = await deploy<StableERC20>("StableERC20", undefined, "Magnetar Finance USD+", "SFUSD+", MINT_VALUE);
+  const USDC = await deploy<StableERC20>("StableERC20", undefined, "Magnetar Finance USD", "MGNUSD", MINT_VALUE);
+  const USDT = await deploy<StableERC20>("StableERC20", undefined, "Magnetar Finance USD+", "MGNUSD+", MINT_VALUE);
   const outputDirectory = "script/constants/output";
   const outputFile = join(process.cwd(), outputDirectory, `StableERC20Output-${String(networkId)}.json`);
 

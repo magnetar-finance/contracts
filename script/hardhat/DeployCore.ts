@@ -18,7 +18,6 @@ import {
   VeArtProxy,
   VotingEscrow,
   MGNForwarder,
-  RouterWithFee,
   Router,
 } from "../../artifacts/types";
 import Values from "../constants/values.json";
@@ -107,6 +106,12 @@ async function main() {
   } catch (error: any) {
     console.error(error.stack);
   }
+
+  try {
+    await writeFile(outputFile, JSON.stringify(output, null, 2));
+  } catch (err) {
+    console.error(`Error writing output file: ${err}`);
+  }
   // ====== end _deploySetupBefore() ======
 
   // ====== start _coreSetup() ======
@@ -128,6 +133,12 @@ async function main() {
   }
 
   try {
+    await writeFile(outputFile, JSON.stringify(output, null, 2));
+  } catch (err) {
+    console.error(`Error writing output file: ${err}`);
+  }
+
+  try {
     if (!output.votingRewardsFactory) {
       votingRewardsFactory = await deploy<VotingRewardsFactory>("VotingRewardsFactory");
       output.votingRewardsFactory = votingRewardsFactory.address;
@@ -142,6 +153,12 @@ async function main() {
   }
 
   try {
+    await writeFile(outputFile, JSON.stringify(output, null, 2));
+  } catch (err) {
+    console.error(`Error writing output file: ${err}`);
+  }
+
+  try {
     if (!output.gaugeFactory) {
       gaugeFactory = await deploy<GaugeFactory>("GaugeFactory");
       output.gaugeFactory = gaugeFactory.address;
@@ -150,6 +167,12 @@ async function main() {
     }
   } catch (error: any) {
     console.error(error.stack);
+  }
+
+  try {
+    await writeFile(outputFile, JSON.stringify(output, null, 2));
+  } catch (err) {
+    console.error(`Error writing output file: ${err}`);
   }
 
   try {
@@ -164,6 +187,12 @@ async function main() {
     }
   } catch (error: any) {
     console.error(error.stack);
+  }
+
+  try {
+    await writeFile(outputFile, JSON.stringify(output, null, 2));
+  } catch (err) {
+    console.error(`Error writing output file: ${err}`);
   }
 
   try {
@@ -185,6 +214,12 @@ async function main() {
   }
 
   try {
+    await writeFile(outputFile, JSON.stringify(output, null, 2));
+  } catch (err) {
+    console.error(`Error writing output file: ${err}`);
+  }
+
+  try {
     if (!output.forwarder) {
       forwarder = await deploy<MGNForwarder>("MGNForwarder");
       output.forwarder = forwarder.address;
@@ -193,6 +228,12 @@ async function main() {
     }
   } catch (error: any) {
     console.error(error.stack);
+  }
+
+  try {
+    await writeFile(outputFile, JSON.stringify(output, null, 2));
+  } catch (err) {
+    console.error(`Error writing output file: ${err}`);
   }
 
   // ====== end deployFactories() ======
@@ -221,6 +262,12 @@ async function main() {
   }
 
   try {
+    await writeFile(outputFile, JSON.stringify(output, null, 2));
+  } catch (err) {
+    console.error(`Error writing output file: ${err}`);
+  }
+
+  try {
     if (!output.artProxy) {
       const trig = await deployLibrary("Trig");
       const perlinNoise = await deployLibrary("PerlinNoise");
@@ -240,6 +287,12 @@ async function main() {
   }
 
   try {
+    await writeFile(outputFile, JSON.stringify(output, null, 2));
+  } catch (err) {
+    console.error(`Error writing output file: ${err}`);
+  }
+
+  try {
     if (!output.distributor) {
       distributor = await deploy<RewardsDistributor>("RewardsDistributor", undefined, escrow!.address);
       output.distributor = distributor.address;
@@ -251,6 +304,12 @@ async function main() {
   }
 
   try {
+    await writeFile(outputFile, JSON.stringify(output, null, 2));
+  } catch (err) {
+    console.error(`Error writing output file: ${err}`);
+  }
+
+  try {
     if (!output.voter) {
       voter = await deploy<Voter>("Voter", undefined, forwarder!.address, escrow!.address, factoryRegistry!.address);
       output.voter = voter.address;
@@ -259,6 +318,12 @@ async function main() {
     }
   } catch (error: any) {
     console.error(error.stack);
+  }
+
+  try {
+    await writeFile(outputFile, JSON.stringify(output, null, 2));
+  } catch (err) {
+    console.error(`Error writing output file: ${err}`);
   }
 
   try {
@@ -289,6 +354,12 @@ async function main() {
     }
   } catch (error: any) {
     console.error(error.stack);
+  }
+
+  try {
+    await writeFile(outputFile, JSON.stringify(output, null, 2));
+  } catch (err) {
+    console.error(`Error writing output file: ${err}`);
   }
 
   try {

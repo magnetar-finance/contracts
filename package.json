@@ -41,6 +41,7 @@
     "clean": "rm -rf artifacts",
     "build": "yarn clean && yarn compile",
     "deploy": "npx hardhat run script/hardhat/DeployCore.ts",
+    "deploy:weth": "npx hardhat run script/hardhat/DeployWETH.ts",
     "deploy:stable": "npx hardhat run script/hardhat/DeployStableERC20.ts",
     "deploy:router": "npx hardhat run script/hardhat/DeployRouter.ts",
     "getEther:feeRouter": "npx hardhat run script/hardhat/TestGetETHER.ts",
