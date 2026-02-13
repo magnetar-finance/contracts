@@ -248,6 +248,19 @@
   },
   {
     "inputs": [],
+    "name": "mgn",
+    "outputs": [
+      {
+        "internalType": "contract IMGN",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "nudge",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -291,19 +304,6 @@
     "outputs": [
       {
         "internalType": "contract IRewardsDistributor",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "mgn",
-    "outputs": [
-      {
-        "internalType": "contract IMGN",
         "name": "",
         "type": "address"
       }

@@ -44,10 +44,14 @@
     "deploy:weth": "npx hardhat run script/hardhat/DeployWETH.ts",
     "deploy:stable": "npx hardhat run script/hardhat/DeployStableERC20.ts",
     "deploy:router": "npx hardhat run script/hardhat/DeployRouter.ts",
-    "getEther:feeRouter": "npx hardhat run script/hardhat/TestGetETHER.ts",
+    "wrap-ether": "npx hardhat run script/hardhat/TestWrapETHER.ts",
     "extract-abis": "ts-node script/ExtractABIs.ts",
     "deploy:callee": "npx hardhat run script/hardhat/DeployFeeCallee.ts",
     "set:callee": "npx hardhat run script/hardhat/DeployFeeCallee.ts",
-    "support:v3": "npx hardhat run script/hardhat/SupportV3PoolFactory.ts"
+    "support:v3": "npx hardhat run script/hardhat/SupportV3PoolFactory.ts",
+    "get-input": "npx hardhat solidity-json"
+  },
+  "dependencies": {
+    "@xyrusworx/hardhat-solidity-json": "^1.0.2"
   }
 }

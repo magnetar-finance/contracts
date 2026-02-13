@@ -2,6 +2,7 @@ import * as dotenv from "dotenv";
 // import * as tdly from "@tenderly/hardhat-tenderly";
 import "@nomicfoundation/hardhat-toolbox";
 import "@nomicfoundation/hardhat-foundry";
+import "@xyrusworx/hardhat-solidity-json";
 // import "@fluent.xyz/hardhat-plugin";
 
 dotenv.config();
