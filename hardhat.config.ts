@@ -73,6 +73,22 @@ export default {
             gasPrice: "auto",
             gas: "auto",
             gasMultiplier: 1
+        },
+        adiTestnet: {
+            url: "https://rpc.ab.testnet.adifoundation.ai",
+            chainId: 99999,
+            accounts: [process.env.PRIVATE_KEY],
+            gasPrice: "auto",
+            gas: "auto",
+            gasMultiplier: 1
+        },
+        arcTestnet: {
+            url: "https://rpc.testnet.arc.network",
+            chainId: 5042002,
+            accounts: [process.env.PRIVATE_KEY],
+            gasPrice: "auto",
+            gas: "auto",
+            gasMultiplier: 1
         }
     },
     solidity: {

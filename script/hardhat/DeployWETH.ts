@@ -19,6 +19,10 @@ const networkToWethDetailMap: { [key: number]: WETHDetail } = {
     name: "Wrapped Seismic",
     symbol: "WSMIC",
   },
+  99999: {
+    name: "Wrapped ADI",
+    symbol: "WADI",
+  },
 };
 
 async function main() {
